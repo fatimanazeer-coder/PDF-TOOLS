@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Converter Pro - Convert PDF to Word, Excel, Resize PDF</title>
+    <meta name="description" content="Free online PDF tools: Convert PDF to Word (DOCX), PDF to Excel (XLSX), and resize PDF documents. No installation required. 100% secure processing.">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.2);
+            background: var(--primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .tools {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            font-size: 2.2rem;
+            color: var(--dark);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            opacity: 0.7;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            opacity: 1;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            opacity: 0.9;
+        }
+
+        .converter-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .converter-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .converter-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .converter-header p {
+            color: #666;
+        }
+
+        .drop-area {
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-area:hover {
+            border-color: var(--primary);
+        }
+
+        .drop-area.highlight {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 15px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .file-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .converter-options {
+            margin: 30px 0;
+        }
+
+        .option-group {
+            margin-bottom: 20px;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .option-group select, 
+        .option-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .converter-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .features {
+            padding: 80px 0;
+            background: #f1f3ff;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+                margin-top: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .converter-container {
+                padding: 20px;
+            }
+
+            .converter-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">PDFConverterPro</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Convert PDFs to Word, Excel & More</h1>
+            <p>Free online tools to convert your PDF files. No registration required.</p>
+            <a href="#tools" class="btn">Start Converting</a>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <h2 class="section-title">PDF Conversion Tools</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="pdf-to-word">PDF to Word</button>
+                <button class="tab-btn" data-tab="pdf-to-excel">PDF to Excel</button>
+                <button class="tab-btn" data-tab="resize-pdf">Resize PDF</button>
+            </div>
+            
+            <div class="converter-container">
+                <div class="converter-header">
+                    <h2 id="converterTitle">PDF to Word Converter</h2>
+                    <p id="converterDescription">Convert PDF files to editable Word documents</p>
+                </div>
+                
+                <div class="drop-area" id="dropArea">
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf">
+                    <p>Drag & drop your PDF file here or</p>
+                    <button class="btn" id="browseBtn">Browse Files</button>
+                    <p class="file-info" id="fileInfo"></p>
+                    <div class="file-progress" id="fileProgress"></div>
+                </div>
+                
+                <div class="converter-options" id="converterOptions">
+                    <div class="option-group">
+                        <label for="outputFormat">Output Format:</label>
+                        <select id="outputFormat">
+                            <option value="docx">Word Document (.docx)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="converter-actions">
+                    <button class="btn" id="convertBtn">Convert Now</button>
+                    <button class="btn btn-outline" id="resetBtn">Reset</button>
+                </div>
+                
+                <div class="spinner" id="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Use Our Tools?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Processing</h3>
+                    <p>Convert files in seconds with our optimized tools</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure</h3>
+                    <p>Files stay in your browser - never uploaded to servers</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🆓</div>
+                    <h3>Completely Free</h3>
+                    <p>No hidden charges or watermarks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 PDFConverterPro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.1.0/build/index.min.js"></script>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Tab Functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                switchTool(btn.dataset.tab);
+            });
+        });
+
+        // Current tool state
+        let currentTool = 'pdf-to-word';
+        
+        function switchTool(tool) {
+            currentTool = tool;
+            const title = document.getElementById('converterTitle');
+            const description = document.getElementById('converterDescription');
+            const options = document.getElementById('converterOptions');
+            
+            switch(tool) {
+                case 'pdf-to-word':
+                    title.textContent = 'PDF to Word Converter';
+                    description.textContent = 'Convert PDF files to editable Word documents';
+                    options.innerHTML = `
+                        <div class="option-group">
+                            <label for="outputFormat">Output Format:</label>
+                            <select id="outputFormat">
+                                <option value="docx">Word Document (.docx)</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'pdf-to-excel':
+                    title.textContent = 'PDF to Excel Converter';
+                    description.textContent = 'Extract tables from PDF files to Excel';
+                    options.innerHTML = `
+                        <div class="option-group">
+                            <label for="outputFormat">Output Format:</label>
+                            <select id="outputFormat">
+                                <option value="xlsx">Excel Workbook (.xlsx)</option>
+                                <option value="csv">CSV (.csv)</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'resize-pdf':
+                    title.textContent = 'PDF Resizer';
+                    description.textContent = 'Reduce PDF file size without losing quality';
+                    options.innerHTML = `
+                        <div class="option-group">
+                            <label for="compressionLevel">Compression Level:</label>
+                            <select id="compressionLevel">
+                                <option value="low">Low (Best Quality)</option>
+                                <option value="medium" selected>Medium (Recommended)</option>
+                                <option value="high">High (Smallest Size)</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            resetConverter();
+        }
+
+        // Converter functionality
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const browseBtn = document.getElementById('browseBtn');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileProgress = document.getElementById('fileProgress');
+        const convertBtn = document.getElementById('convertBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const spinner = document.getElementById('spinner');
+        const toast = document.getElementById('toast');
+
+        // Initialize PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        // Handle file selection via input
+        browseBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFiles);
+
+        // Reset button
+        resetBtn.addEventListener('click', resetConverter);
+
+        // Convert button
+        convertBtn.addEventListener('click', convertFile);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight() {
+            dropArea.classList.add('highlight');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('highlight');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles({ target: { files } });
+        }
+
+        function handleFiles(e) {
+            const files = e.target.files;
+            if (files.length) {
+                const file = files[0];
+                if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                    fileInfo.textContent = `Selected file: ${file.name} (${formatFileSize(file.size)})`;
+                    convertBtn.disabled = false;
+                } else {
+                    showToast('Please select a PDF file', 'error');
+                    resetConverter();
+                }
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function resetConverter() {
+            fileInput.value = '';
+            fileInfo.textContent = '';
+            fileProgress.style.width = '0%';
+            convertBtn.disabled = true;
+        }
+
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = 'toast show';
+            if (type === 'error') {
+                toast.style.backgroundColor = '#f72585';
+            } else {
+                toast.style.backgroundColor = '#4361ee';
+            }
+            
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        async function convertFile() {
+            if (!fileInput.files.length) return;
+            
+            const file = fileInput.files[0];
+            
+            // Show loading state
+            convertBtn.disabled = true;
+            spinner.style.display = 'block';
+            fileProgress.style.width = '30%';
+            
+            try {
+                // Simulate processing progress
+                await simulateProgress();
+                
+                let result;
+                switch(currentTool) {
+                    case 'pdf-to-word':
+                        result = await convertPdfToWord(file);
+                        break;
+                    case 'pdf-to-excel':
+                        result = await convertPdfToExcel(file);
+                        break;
+                    case 'resize-pdf':
+                        result = await resizePdf(file);
+                        break;
+                }
+                
+                // Download the result
+                saveAs(result.blob, result.filename);
+                
+                showToast('Conversion complete! File downloaded.', 'success');
+            } catch (error) {
+                console.error('Conversion error:', error);
+                showToast('Conversion failed: ' + error.message, 'error');
+            } finally {
+                // Reset UI
+                spinner.style.display = 'none';
+                convertBtn.disabled = false;
+                fileProgress.style.width = '0%';
+            }
+        }
+
+        function simulateProgress() {
+            return new Promise(resolve => {
+                let progress = 30;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10;
+                    fileProgress.style.width = `${Math.min(progress, 90)}%`;
+                    
+                    if (progress >= 90) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 200);
+            });
+        }
+
+        async function extractTextFromPdf(pdfFile) {
+            try {
+                const arrayBuffer = await pdfFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                let fullText = "";
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    fullText += textContent.items.map(item => item.str).join(' ') + "\n\n";
+                }
+                
+                return fullText;
+            } catch (error) {
+                console.error('Text extraction error:', error);
+                throw new Error('Failed to extract text from PDF');
+            }
+        }
+
+        async function convertPdfToWord(pdfFile) {
+            try {
+                const pdfText = await extractTextFromPdf(pdfFile);
+                
+                // Create Word document
+                const doc = new docx.Document({
+                    sections: [{
+                        properties: {},
+                        children: [
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: "Converted from PDF: " + pdfFile.name,
+                                        bold: true,
+                                        size: 24
+                                    })
+                                ]
+                            }),
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: pdfText,
+                                        size: 20
+                                    })
+                                ]
+                            })
+                        ]
+                    }]
+                });
+                
+                const blob = await docx.Packer.toBlob(doc);
+                const filename = pdfFile.name.replace('.pdf', '') + '.docx';
+                
+                return { blob, filename };
+            } catch (error) {
+                console.error('Word conversion error:', error);
+                throw new Error('Failed to create Word document');
+            }
+        }
+
+        async function convertPdfToExcel(pdfFile) {
+            try {
+                const pdfText = await extractTextFromPdf(pdfFile);
+                
+                // Create Excel workbook
+                const workbook = XLSX.utils.book_new();
+                
+                // Convert text to worksheet (simple implementation)
+                const lines = pdfText.split('\n').filter(line => line.trim() !== '');
+                const worksheet = XLSX.utils.aoa_to_sheet(lines.map(line => [line]));
+                
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+                
+                const excelFileType = document.getElementById('outputFormat').value === 'csv' ? 'csv' : 'xlsx';
+                const excelData = XLSX.write(workbook, { bookType: excelFileType, type: 'array' });
+                
+                const blob = new Blob([excelData], { 
+                    type: excelFileType === 'csv' ? 'text/csv' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                });
+                
+                const filename = pdfFile.name.replace('.pdf', '') + '.' + excelFileType;
+                
+                return { blob, filename };
+            } catch (error) {
+                console.error('Excel conversion error:', error);
+                throw new Error('Failed to create Excel file');
+            }
+        }
+
+        async function resizePdf(pdfFile) {
+            try {
+                const arrayBuffer = await pdfFile.arrayBuffer();
+                const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                
+                // Get compression level
+                const compressionLevel = document.getElementById('compressionLevel').value;
+                
+                // Save with different compression settings
+                const saveOptions = {
+                    useObjectStreams: true,
+                    ...(compressionLevel !== 'low' ? { useCompression: true } : {})
+                };
+                
+                const pdfBytes = await pdfDoc.save(saveOptions);
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                
+                const filename = pdfFile.name.replace('.pdf', '') + '_compressed.pdf';
+                
+                return { blob, filename };
+            } catch (error) {
+                console.error('PDF resize error:', error);
+                throw new Error('Failed to resize PDF');
+            }
+        }
+    </script>
+</body>
+</html>
